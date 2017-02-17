@@ -1,6 +1,7 @@
 %w[
   fontina
   fiddle
+  fiddle/import
   fiddle/types
 ].each { |lib| require lib }
 
