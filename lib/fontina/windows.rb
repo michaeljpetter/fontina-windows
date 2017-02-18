@@ -1,5 +1,6 @@
 %w[
   fontina
+  fontina/windows/language_codes
   fiddle
   fiddle/import
   fiddle/types
@@ -7,13 +8,12 @@
 
 %w[
   version
-  language_codes
   marshal
   win32
   package
   meta_package
   install
-].each { |file| require "fontina/windows/#{file}" }
+].each { |file| require_relative "windows/#{file}" }
 
 module Fontina::Windows
   include Win32
