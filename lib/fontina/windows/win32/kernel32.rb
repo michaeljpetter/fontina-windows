@@ -2,6 +2,7 @@ module Fontina::Windows::Win32
 
   dlload :Kernel32 do
     extern 'DWORD GetLastError()'
+    extern 'void SetLastError(DWORD)'
 
     extern 'DWORD FormatMessageW(DWORD, PVOID, DWORD, DWORD, LPSTR, DWORD, PVOID)' \
       do |flags, message_id, len, source: NULL, language_id: 0|

@@ -48,7 +48,7 @@ module Fontina::Windows::Win32
     )
 
     extern 'long RegGetValueW(PVOID, LPCSTR, LPCSTR, DWORD, DWORD*, BYTE*, DWORD*)' \
-      do |hkey, subkey, name, flags: RRF_RT_ANY, data_len: nil|
+      do |hkey, name, subkey: nil, flags: RRF_RT_ANY, data_len: nil|
         type = dword(NULL)
         data, data_len = data_len ? [byte(0) * data_len, dword(data_len)] : [NULL, dword(NULL)]
         Error.check super(hkey, wstr(subkey), wstr(name), flags, type, data, data_len)

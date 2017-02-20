@@ -31,6 +31,10 @@ module Fontina::Windows::Win32
       def check_hr(code)
         raise new code unless 0 == code[31]
       end
+
+      def clear
+        Kernel32.SetLastError(ERROR_SUCCESS)
+      end
     end
   end
 

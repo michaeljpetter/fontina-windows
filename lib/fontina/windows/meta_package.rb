@@ -5,6 +5,8 @@ module Fontina
       include Marshal
       Fontina::MetaPackage.include self
 
+      using Mores::Patch::FileUtils
+
       def registered_name
         @registered_name ||= begin
           name = package.preferred_name \
@@ -17,18 +19,32 @@ module Fontina
         end
       end
 
-      def install
-        conflicts = Windows.registered_fonts
-          .find_all { |(name, path)| (name == registered_name) ^ (path == file.filename) }
-        fail "Conflicting registrations found: #{conflicts.to_h}" unless conflicts.empty?
+      def installed?
+        !!(path = Windows.font_registered? registered_name) and
+        path = File.expand_path(path, Windows.fonts_directory) and
+        File.file?(path) and
+        File.open(path) { |io| FileUtils.compare_stream io.binmode, StringIO.new(file.content) }
+      end
 
-        File.write File.join(Windows.fonts_directory, file.filename), file.content
+      def install(force: false)
+        return if installed? unless force
 
-        unless (count = Windows.add_font_resource file.filename) == package.fonts.length
-          fail "Windows reported #{count} fonts added (expected: #{package.fonts.length})"
+        add_times = 1
+        path = Windows.font_registered? registered_name
+
+        Dir.chdir(Windows.fonts_directory) do
+          add_times = Windows.remove_font_resource path if path and File.exist? path
+          path, = FileUtils.safe_write file.filename, file.content
         end
 
-        Windows.register_font registered_name, file.filename
+        Windows.add_font_resource(path, times: add_times).tap do |count|
+          unless count == package.fonts.length
+            fail "Windows reported #{count} fonts added (expected: #{package.fonts.length})"
+          end
+        end
+
+        Windows.register_font registered_name, path
+        Windows.notify_fonts_changed
       end
     end
 
