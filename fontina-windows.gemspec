@@ -18,7 +18,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ['lib']
 
   gem.add_dependency 'fontina', '>= 0.2.1'
-  gem.add_dependency 'mores', '>= 0.3.1'
+  gem.add_dependency 'mores', '>= 0.3.2'
 
   gem.add_development_dependency 'bundler', '~> 1.7'
   gem.add_development_dependency 'rake', '~> 10.0'
