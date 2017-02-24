@@ -27,7 +27,7 @@ module Fontina
       end
 
       def install(force: false)
-        return if installed? unless force
+        return false if installed? unless force
 
         path = Windows.font_registered? registered_name
 
@@ -44,6 +44,7 @@ module Fontina
 
         Windows.register_font registered_name, path
         Windows.notify_fonts_changed
+        true
       end
     end
 
