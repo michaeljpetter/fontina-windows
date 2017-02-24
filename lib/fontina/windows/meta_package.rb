@@ -29,17 +29,16 @@ module Fontina
       def install(force: false)
         return if installed? unless force
 
-        add_times = 1
         path = Windows.font_registered? registered_name
 
         Dir.chdir(Windows.fonts_directory) do
-          add_times = Windows.remove_font_resource path if path and File.exist? path
-          path, = FileUtils.safe_write file.filename, file.content
-        end
+          removed_times = Windows.remove_font_resource path if path and File.exist? path
 
-        Windows.add_font_resource(path, times: add_times).tap do |count|
-          unless count == package.fonts.length
-            fail "Windows reported #{count} fonts added (expected: #{package.fonts.length})"
+          path, = FileUtils.safe_write file.filename, file.content
+
+          font_count = Windows.add_font_resource path, times: [1, removed_times.to_i].max
+          unless font_count == package.fonts.length
+            fail "Windows reported #{font_count} fonts added (expected: #{package.fonts.length})"
           end
         end
 
