@@ -1,7 +1,6 @@
 # Fontina Windows Extensions
 
-[![Version](http://img.shields.io/gem/v/fontina-windows.svg)                        ](https://rubygems.org/gems/fontina-windows)
-[![Travis ](https://img.shields.io/travis/michaeljpetter/fontina-windows/master.svg)](https://travis-ci.org/michaeljpetter/fontina-windows)
+[![Version](http://img.shields.io/gem/v/fontina-windows.svg)](https://rubygems.org/gems/fontina-windows)
 
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/fontina/windows`. To experiment with that code, run `bin/console` for an interactive prompt.
 
